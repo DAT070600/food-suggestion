@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gợi Ý Món Ăn</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+    <div class="container mx-auto p-4 max-w-2xl">
+        <h1 class="text-3xl font-bold text-center mb-6">Gợi Ý Món Ăn</h1>
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <label for="ingredients" class="block text-lg font-medium mb-2">Nhập nguyên liệu bạn có (cách nhau bằng dấu phẩy):</label>
+            <input type="text" id="ingredients" class="w-full p-2 border rounded mb-4" placeholder="Ví dụ: gà, cà chua, hành tây">
+            <button onclick="suggestDishes()" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Tìm món ăn</button>
+            <div id="suggestions" class="mt-4"></div>
+        </div>
+    </div>
+
+    <script>
+        const dishes = [
+            { name: "Gà kho gừng", ingredients: ["gà", "gừng", "nước mắm", "đường", "tỏi"] },
+            { name: "Cà chua xào trứng", ingredients: ["cà chua", "trứng", "hành tây", "hành lá"] },
+            { name: "Canh chua cá", ingredients: ["cá", "cà chua", "dứa", "rau muống", "me"] },
+            { name: "Thịt bò xào hành tây", ingredients: ["thịt bò", "hành tây", "tỏi", "ớt chuông"] },
+            { name: "Đậu hũ chiên giòn", ingredients: ["đậu hũ", "dầu ăn", "nước mắm"] },
+            { name: "Thịt heo kho trứng", ingredients: ["thịt heo", "trứng", "nước mắm", "đường", "hành tím"] },
+            { name: "Canh bí đỏ nấu tôm", ingredients: ["bí đỏ", "tôm", "hành lá", "nước mắm"] },
+            { name: "Rau muống xào tỏi", ingredients: ["rau muống", "tỏi", "dầu ăn"] },
+            { name: "Cá chiên giòn", ingredients: ["cá", "dầu ăn", "muối", "tiêu"] },
+            { name: "Gỏi gà xé phay", ingredients: ["gà", "hành tây", "rau răm", "chanh", "ớt"] },
+            { name: "Mì xào bò", ingredients: ["thịt bò", "mì", "cải thìa", "tỏi", "nước tương"] },
+            { name: "Sườn xào chua ngọt", ingredients: ["sườn heo", "cà chua", "dứa", "hành tây", "đường"] },
+            { name: "Canh rau cải thịt băm", ingredients: ["rau cải", "thịt băm", "hành lá", "nước mắm"] },
+            { name: "Đậu hũ sốt cà", ingredients: ["đậu hũ", "cà chua", "hành lá", "tỏi"] },
+            { name: "Thịt gà chiên mắm", ingredients: ["gà", "nước mắm", "tỏi", "đường"] },
+            { name: "Nộm rau muống", ingredients: ["rau muống", "tôm", "chanh", "ớt", "nước mắm"] },
+            { name: "Bắp cải luộc chấm mắm", ingredients: ["bắp cải", "nước mắm", "tỏi", "ớt"] },
+            { name: "Canh khoai mỡ nấu sườn", ingredients: ["khoai mỡ", "sườn heo", "hành lá"] },
+            { name: "Tôm rim thịt", ingredients: ["tôm", "thịt heo", "nước mắm", "đường", "hành tím"] },
+            { name: "Salad rau củ", ingredients: ["xà lách", "cà chua", "dưa leo", "hành tây", "dầu ô liu"] }
+        ];
+
+        function suggestDishes() {
+            const input = document.getElementById('ingredients').value.toLowerCase().trim();
+            const userIngredients = input.split(',').map(item => item.trim());
+            const suggestionsDiv = document.getElementById('suggestions');
+            suggestionsDiv.innerHTML = '';
+
+            if (!input) {
+                suggestionsDiv.innerHTML = '<p class="text-red-500">Vui lòng nhập nguyên liệu!</p>';
+                return;
+            }
+
+            const matchingDishes = dishes.filter(dish => 
+                dish.ingredients.some(ingredient => userIngredients.includes(ingredient))
+            );
+
+            if (matchingDishes.length === 0) {
+                suggestionsDiv.innerHTML = '<p class="text-gray-500">Không tìm thấy món ăn phù hợp với nguyên liệu của bạn.</p>';
+                return;
+            }
+
+            suggestionsDiv.innerHTML = '<h2 class="text-xl font-semibold mb-2">Món ăn gợi ý:</h2>';
+            matchingDishes.forEach(dish => {
+                suggestionsDiv.innerHTML += `
+                    <div class="mb-4">
+                        <h3 class="text-lg font-medium">${dish.name}</h3>
+                        <p class="text-gray-600">Nguyên liệu cần: ${dish.ingredients.join(', ')}</p>
+                    </div>
+                `;
+            });
+        }
+    </script>
+</body>
+</html>
